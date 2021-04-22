@@ -1,12 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import logo from "../logo.svg";
-
 
 const Nav = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
-                <a className="navbar-brand" href="#">
+                <a className="navbar-brand " href="!#" >
                     <img
                         src={logo}
                         alt=""
@@ -32,19 +32,19 @@ const Nav = () => {
                     id="navbarTogglerDemo02"
                 >
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <a
                                 className="nav-link"
                                 aria-current="page"
-                                href="#"
+                                href="!#"
                             >
                                 Proyectos
                             </a>
-                        </li>
+                        </li> */}
                         <li className="nav-item">
-                            <a className="nav-link" href="#">
+                            <Link className="nav-link" to="/teachers">
                                 Maestros
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                     <form className="d-flex">
@@ -53,10 +53,7 @@ const Nav = () => {
                             type="submit"
                         >
                             Login
-                            <span
-                                id="login"
-                                className="ps-1 material-icons"
-                            >
+                            <span id="login" className="ps-1 material-icons">
                                 &#xea77;
                             </span>
                         </button>
