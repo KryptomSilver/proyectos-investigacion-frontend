@@ -3,9 +3,10 @@ import axios from "axios";
 import Teacher from "./Teacher";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import Nav from './Nav'
+import Nav from "./Nav";
+import { AlertsSuccess } from "./alerts";
 
-const ListaMaestros = () => {
+const ListTeachers = () => {
     //state para maestros
     const [teachers, setTeachers] = useState([]);
     const [alerteliminar, setAlerteliminar] = useState(true);
@@ -15,7 +16,6 @@ const ListaMaestros = () => {
             const url = `http://localhost:4000/api/teachers`;
             const teachers = await axios.get(url);
             setTeachers(teachers.data.docs);
-            console.log(teachers.data.docs);
         };
         consultAPI();
     }, [alerteliminar]);
@@ -33,7 +33,9 @@ const ListaMaestros = () => {
                 const eliminarAPI = async () => {
                     const url = `http://localhost:4000/api/teachers/${id}`;
                     const respuesta = await axios.delete(url);
-                    console.log(respuesta);
+                    if (respuesta.status === 200) {
+                        AlertsSuccess(respuesta.data.message);
+                    }
                     setAlerteliminar(true);
                 };
                 setAlerteliminar(false);
@@ -52,30 +54,33 @@ const ListaMaestros = () => {
                         Agregar
                     </Link>
                 </div>
-                <table className="table table-bordered mt-4">
-                    <thead className="table-dark">
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Sexo</th>
-                            <th>Antiguedad</th>
-                            <th>Nombramiento</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
+                <div className="table-responsive">
+                    <table className="table table-bordered mt-4">
+                        <thead className="table-dark">
+                            <tr>
+                                <th className="text-center">Nombre</th>
+                                <th className="text-center">Sexo</th>
+                                <th className="text-center">Antigüedad</th>
+                                <th className="text-center">Nombramiento</th>
+                                <th className="text-center">Ingreso institución</th>
+                                <th className="text-center">Acciones</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        {teachers.map((teacher) => (
-                            <Teacher
-                                key={teacher._id}
-                                teacher={teacher}
-                                eliminar={eliminar}
-                            />
-                        ))}
-                    </tbody>
-                </table>
+                        <tbody>
+                            {teachers.map((teacher) => (
+                                <Teacher
+                                    key={teacher._id}
+                                    teacher={teacher}
+                                    eliminar={eliminar}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </Fragment>
     );
 };
 
-export default ListaMaestros;
+export default ListTeachers;

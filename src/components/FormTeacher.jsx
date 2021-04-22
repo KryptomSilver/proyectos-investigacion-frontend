@@ -1,18 +1,18 @@
-import axios from "axios";
 import React, { Fragment } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { AlertsSuccess } from "./alerts";
+import axios from "axios";
 import Nav from "./Nav";
 
-const FormularioMaestros = () => {
+const FormTeacher = () => {
     const [redirect, setRedirect] = useState(false);
+    const [antiguedadNew, setantiguedadNew] = useState("");
     const [teacher, setTeacher] = useState({
         nombre: "",
         nombramiento: "",
         sexo: "",
         ingreso_institucion: "",
-        antiguedad: "",
         grado_max: "",
     });
     const {
@@ -20,7 +20,6 @@ const FormularioMaestros = () => {
         nombramiento,
         sexo,
         ingreso_institucion,
-        antiguedad,
         grado_max,
     } = teacher;
     const onChange = (e) => {
@@ -29,19 +28,31 @@ const FormularioMaestros = () => {
             [e.target.name]: e.target.value,
         });
     };
+    useEffect(() => {
+        const fechaHoyMil = Date.now();
+        const fechaHoyNew = new Date(fechaHoyMil);
+        const fechaIngNew = new Date(ingreso_institucion);
+        const fechaAnt = fechaHoyNew.getFullYear() - fechaIngNew.getFullYear();
+        setantiguedadNew({
+            ...fechaAnt,
+            fechaAnt,
+        });
+    }, [ingreso_institucion]);
+
     const enviarForm = (e) => {
         e.preventDefault();
         axios
             .post("http://localhost:4000/api/teachers", {
-                nombre,
-                nombramiento,
-                sexo,
-                ingreso_institucion,
-                antiguedad,
-                grado_max,
+                nombre: nombre,
+                nombramiento: nombramiento,
+                sexo: sexo,
+                ingreso_institucion: ingreso_institucion,
+                antiguedad: antiguedadNew.fechaAnt,
+                grado_max: grado_max,
             })
             .then(
                 (respose) => {
+                    console.log(respose);
                     AlertsSuccess(respose.data.message);
                     setTimeout(() => {
                         setRedirect(true);
@@ -77,7 +88,7 @@ const FormularioMaestros = () => {
                                                 type="text"
                                                 name="nombre"
                                                 id="nombre"
-                                                value={nombre}
+                                                value={nombre || ""}
                                                 onChange={onChange}
                                                 className="form-control"
                                                 required
@@ -95,7 +106,7 @@ const FormularioMaestros = () => {
                                             <select
                                                 className="form-select"
                                                 id="sexo"
-                                                value={sexo}
+                                                value={sexo || ""}
                                                 name="sexo"
                                                 onChange={onChange}
                                                 required
@@ -114,21 +125,38 @@ const FormularioMaestros = () => {
                                 <div className="row ps-4 pe-4 mb-3">
                                     <div className="col">
                                         <div className="mb-2">
-                                            <label className="form-label pb-1">
+                                            <label
+                                                className="form-label pb-1"
+                                                htmlFor="nombramiento"
+                                            >
                                                 Nombramiento:
                                             </label>
-                                            <input
-                                                type="text"
-                                                name="nombramiento"
+                                            <select
+                                                className="form-select"
                                                 id="nombramiento"
+                                                value={nombramiento || ""}
+                                                name="nombramiento"
                                                 onChange={onChange}
-                                                value={nombramiento}
-                                                className="form-control"
                                                 required
-                                            />
+                                            >
+                                                <option value="" defaultValue>
+                                                    Selecciona una opción
+                                                </option>
+                                                <option value="Profesor tiempo completo">
+                                                    Profesor tiempo completo
+                                                </option>
+                                                <option value="Profesor 3/4 tiempo">
+                                                    Profesor 3/4 tiempo
+                                                </option>
+                                                <option value="Profesor medio tiempo">
+                                                    Profesor medio tiempo
+                                                </option>
+                                                <option value="Profesor asignatura">
+                                                    Profesor asignatura
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
-
                                     <div className="col">
                                         <div className="mb-2">
                                             <label
@@ -142,7 +170,9 @@ const FormularioMaestros = () => {
                                                 name="ingreso_institucion"
                                                 id="ingreso"
                                                 onChange={onChange}
-                                                value={ingreso_institucion}
+                                                value={
+                                                    ingreso_institucion || ""
+                                                }
                                                 className="form-control"
                                                 required
                                             />
@@ -156,13 +186,16 @@ const FormularioMaestros = () => {
                                                 Antiguedad:
                                             </label>
                                             <input
-                                                type="date"
-                                                name="antiguedad"
-                                                id="antiguedad"
-                                                value={antiguedad}
+                                                type="text"
+                                                name="antiguedadNew"
+                                                id="antiguedadNew"
+                                                value={
+                                                    antiguedadNew.fechaAnt || ""
+                                                }
                                                 onChange={onChange}
                                                 className="form-control"
                                                 required
+                                                disabled
                                             />
                                         </div>
                                     </div>
@@ -177,7 +210,7 @@ const FormularioMaestros = () => {
                                             <select
                                                 className="form-select"
                                                 id="grado"
-                                                value={grado_max}
+                                                value={grado_max || ""}
                                                 name="grado_max"
                                                 onChange={onChange}
                                                 required
@@ -188,8 +221,11 @@ const FormularioMaestros = () => {
                                                 <option value="Licenciatura">
                                                     Licenciatura
                                                 </option>
-                                                <option value="Maestria">
-                                                    Mastria
+                                                <option value="Maestría">
+                                                    Maestría
+                                                </option>
+                                                <option value="Doctorado">
+                                                    Doctorado
                                                 </option>
                                             </select>
                                         </div>
@@ -221,4 +257,4 @@ const FormularioMaestros = () => {
     );
 };
 
-export default FormularioMaestros;
+export default FormTeacher;

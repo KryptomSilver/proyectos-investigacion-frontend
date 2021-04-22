@@ -3,6 +3,8 @@ import FormTeacher from "./components/FormTeacher";
 import ListTeachers from "./components/ListTeachers";
 import FormTeacherEdit from "./components/FormTeacherEdit";
 import TeacherSee from "./components/TeacherSee";
+import Templeate from './components/Templeate'
+
 
 function App() {
     return (
@@ -16,6 +18,8 @@ function App() {
                 />
                 <Route exact path="/teacheredit" component={FormTeacherEdit} />
                 <Route exact path="/teachersee" component={TeacherSee} />
+                <Route  path="/" component={Templeate} />
+               
             </Switch>
         </Router>
     );

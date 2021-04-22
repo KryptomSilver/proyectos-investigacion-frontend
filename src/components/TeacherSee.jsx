@@ -30,7 +30,6 @@ const FormularioMaestros = (props) => {
     };
     useEffect(() => {
         const consultarTeacher = async () => {
-            console.log(id);
             const url = `http://localhost:4000/api/teachers/${id}`;
             const teacher = await axios.get(url);
             const {
@@ -107,18 +106,36 @@ const FormularioMaestros = (props) => {
                             <div className="row ps-4 pe-4 mb-3">
                                 <div className="col">
                                     <div className="mb-2">
-                                        <label className="form-label pb-1">
+                                        <label
+                                            className="form-label pb-1"
+                                            htmlFor="nombramiento"
+                                        >
                                             Nombramiento:
                                         </label>
-                                        <input
-                                            type="text"
-                                            name="nombramiento"
+                                        <select
+                                            className="form-select"
                                             id="nombramiento"
+                                            value={nombramiento || ""}
+                                            name="nombramiento"
                                             onChange={onChange}
-                                            value={nombramiento}
-                                            className="form-control"
                                             disabled
-                                        />
+                                        >
+                                            <option value="" defaultValue>
+                                                Selecciona una opción
+                                            </option>
+                                            <option value="Profesor tiempo completo">
+                                                Profesor tiempo completo
+                                            </option>
+                                            <option value="Profesor 3/4 tiempo">
+                                                Profesor 3/4 tiempo
+                                            </option>
+                                            <option value="Profesor medio tiempo">
+                                                Profesor medio tiempo
+                                            </option>
+                                            <option value="Profesor asignatura">
+                                                Profesor asignatura
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -151,12 +168,10 @@ const FormularioMaestros = (props) => {
                                             Antiguedad:
                                         </label>
                                         <input
-                                            type="date"
+                                            type="text"
                                             name="antiguedad"
                                             id="antiguedad"
-                                            value={moment(antiguedad).format(
-                                                "YYYY-MM-DD"
-                                            )}
+                                            value={antiguedad}
                                             onChange={onChange}
                                             className="form-control"
                                             disabled
@@ -185,8 +200,11 @@ const FormularioMaestros = (props) => {
                                             <option value="Licenciatura">
                                                 Licenciatura
                                             </option>
-                                            <option value="Maestria">
-                                                Mastria
+                                            <option value="Maestría">
+                                                Maestría
+                                            </option>
+                                            <option value="Doctorado">
+                                                Doctorado
                                             </option>
                                         </select>
                                     </div>
