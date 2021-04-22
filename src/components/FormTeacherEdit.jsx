@@ -101,10 +101,11 @@ const FormularioMaestros = (props) => {
                                             <input
                                                 type="text"
                                                 name="nombre"
-                                                id=""
+                                                id="nombre"
                                                 value={nombre}
                                                 onChange={onChange}
                                                 className="form-control"
+                                                required
                                             />
                                         </div>
                                     </div>
@@ -112,18 +113,19 @@ const FormularioMaestros = (props) => {
                                         <div className="mb-2">
                                             <label
                                                 className="form-label pb-1"
-                                                htmlFor="inputGroupSelect01"
+                                                htmlFor="sexo"
                                             >
                                                 Sexo:
                                             </label>
                                             <select
                                                 className="form-select"
-                                                id="inputGroupSelect01"
+                                                id="sexo"
                                                 value={sexo}
                                                 name="sexo"
                                                 onChange={onChange}
+                                                required
                                             >
-                                                <option defaultValue>
+                                                <option defaultValue value="">
                                                     Selecciona una opción
                                                 </option>
                                                 <option value="H">
@@ -143,10 +145,11 @@ const FormularioMaestros = (props) => {
                                             <input
                                                 type="text"
                                                 name="nombramiento"
-                                                id=""
+                                                id="nombramiento"
                                                 onChange={onChange}
                                                 value={nombramiento}
                                                 className="form-control"
+                                                required
                                             />
                                         </div>
                                     </div>
@@ -155,19 +158,20 @@ const FormularioMaestros = (props) => {
                                         <div className="mb-2">
                                             <label
                                                 className="form-label pb-1"
-                                                htmlFor="inputGroupSelect01"
+                                                htmlFor="ingreso"
                                             >
                                                 Ingreso institucion:
                                             </label>
                                             <input
                                                 type="date"
                                                 name="ingreso_institucion"
-                                                id=""
+                                                id="ingreso"
                                                 onChange={onChange}
                                                 value={moment(
                                                     ingreso_institucion
                                                 ).format("YYYY-MM-DD")}
                                                 className="form-control"
+                                                required
                                             />
                                         </div>
                                     </div>
@@ -181,12 +185,13 @@ const FormularioMaestros = (props) => {
                                             <input
                                                 type="date"
                                                 name="antiguedad"
-                                                id=""
+                                                id="antiguedad"
                                                 value={moment(
                                                     antiguedad
                                                 ).format("YYYY-MM-DD")}
                                                 onChange={onChange}
                                                 className="form-control"
+                                                required
                                             />
                                         </div>
                                     </div>
@@ -194,18 +199,19 @@ const FormularioMaestros = (props) => {
                                         <div className="mb-2">
                                             <label
                                                 className="form-label pb-1"
-                                                htmlFor="inputGroupSelect01"
+                                                htmlFor="grado"
                                             >
                                                 Grado maximo:
                                             </label>
                                             <select
                                                 className="form-select"
-                                                id="inputGroupSelect01"
+                                                id="grado"
                                                 value={grado_max}
                                                 name="grado_max"
                                                 onChange={onChange}
+                                                required
                                             >
-                                                <option defaultValue>
+                                                <option defaultValue value="">
                                                     Selecciona una opción
                                                 </option>
                                                 <option value="Licenciatura">
@@ -229,7 +235,7 @@ const FormularioMaestros = (props) => {
                                             </Link>
                                             <input
                                                 type="submit"
-                                                value="Agregar"
+                                                value="Editar"
                                                 className="btn btn-dark btn-md d-flex align-items-center"
                                             />
                                         </div>

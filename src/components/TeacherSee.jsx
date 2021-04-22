@@ -71,7 +71,7 @@ const FormularioMaestros = (props) => {
                                         <input
                                             type="text"
                                             name="nombre"
-                                            id=""
+                                            id="nombre"
                                             value={nombre}
                                             onChange={onChange}
                                             className="form-control"
@@ -83,13 +83,13 @@ const FormularioMaestros = (props) => {
                                     <div className="mb-2">
                                         <label
                                             className="form-label pb-1"
-                                            htmlFor="inputGroupSelect01"
+                                            htmlFor="sexo"
                                         >
                                             Sexo:
                                         </label>
                                         <select
                                             className="form-select"
-                                            id="inputGroupSelect01"
+                                            id="sexo"
                                             value={sexo}
                                             name="sexo"
                                             onChange={onChange}
@@ -113,7 +113,7 @@ const FormularioMaestros = (props) => {
                                         <input
                                             type="text"
                                             name="nombramiento"
-                                            id=""
+                                            id="nombramiento"
                                             onChange={onChange}
                                             value={nombramiento}
                                             className="form-control"
@@ -126,7 +126,7 @@ const FormularioMaestros = (props) => {
                                     <div className="mb-2">
                                         <label
                                             className="form-label pb-1"
-                                            htmlFor="inputGroupSelect01"
+                                            htmlFor="grado"
                                         >
                                             Ingreso institucion:
                                         </label>
@@ -153,7 +153,7 @@ const FormularioMaestros = (props) => {
                                         <input
                                             type="date"
                                             name="antiguedad"
-                                            id=""
+                                            id="antiguedad"
                                             value={moment(antiguedad).format(
                                                 "YYYY-MM-DD"
                                             )}
@@ -167,13 +167,13 @@ const FormularioMaestros = (props) => {
                                     <div className="mb-2">
                                         <label
                                             className="form-label pb-1"
-                                            htmlFor="inputGroupSelect01"
+                                            htmlFor="grado"
                                         >
                                             Grado maximo:
                                         </label>
                                         <select
                                             className="form-select"
-                                            id="inputGroupSelect01"
+                                            id="grado"
                                             value={grado_max}
                                             name="grado_max"
                                             onChange={onChange}
