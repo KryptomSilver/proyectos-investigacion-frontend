@@ -5,15 +5,16 @@ import { Link, Redirect } from "react-router-dom";
 import { AlertsSuccess } from "./alerts";
 import Nav from "./Nav";
 
-const FormularioMaestros = (props) => {
+const FormTeacherEdit = (props) => {
     const [redirect, setRedirect] = useState(false);
+    const [antiguedadNew, setantiguedadNew] = useState("");
     const id = props.location.state.id;
     const [teacher, setTeacher] = useState({
         nombre: "",
         nombramiento: "",
         sexo: "",
         ingreso_institucion: "",
-        antiguedad: "",
+
         grado_max: "",
     });
     const {
@@ -21,7 +22,7 @@ const FormularioMaestros = (props) => {
         nombramiento,
         sexo,
         ingreso_institucion,
-        antiguedad,
+
         grado_max,
     } = teacher;
     const onChange = (e) => {
@@ -30,33 +31,52 @@ const FormularioMaestros = (props) => {
             [e.target.name]: e.target.value,
         });
     };
-    const enviarForm = (e) => {
-        e.preventDefault();
-        axios
-            .put(`http://localhost:4000/api/teachers/${id}`, {
-                nombre,
-                nombramiento,
-                sexo,
-                ingreso_institucion,
-                antiguedad,
-                grado_max,
-            })
-            .then(
-                (respose) => {
-                    AlertsSuccess(respose.data.message);
-                    setTimeout(() => {
-                        setRedirect(true);
-                    }, 1500);
-                    setTeacher({});
-                },
-                (error) => {
-                    console.log(error);
-                }
-            );
+    useEffect(() => {
+        const fechaHoyMil = Date.now();
+        const fechaHoyNew = new Date(fechaHoyMil);
+        const fechaIngNew = new Date(ingreso_institucion);
+        const fechaAnt = fechaHoyNew.getFullYear() - fechaIngNew.getFullYear();
+        setantiguedadNew({
+            ...fechaAnt,
+            fechaAnt,
+        });
+    }, [ingreso_institucion]);
+    const sendForm = (e) => {
+        var forms = document.querySelectorAll(".needs-validation");
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            if (!form.checkValidity()) {
+                e.preventDefault();
+                e.stopPropagation();
+                form.classList.add("was-validated");
+            } else {
+                e.preventDefault();
+                axios
+                    .put(`http://localhost:4000/api/teachers/${id}`, {
+                        nombre,
+                        nombramiento,
+                        sexo,
+                        ingreso_institucion,
+                        antiguedad: antiguedadNew.fechaAnt,
+                        grado_max,
+                    })
+                    .then(
+                        (respose) => {
+                            AlertsSuccess(respose.data.message);
+                            setTimeout(() => {
+                                setRedirect(true);
+                            }, 1500);
+                            setTeacher({});
+                            form.classList.remove("was-validated");
+                        },
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
+            }
+        });
     };
     useEffect(() => {
         const consultarTeacher = async () => {
-            console.log(id);
             const url = `http://localhost:4000/api/teachers/${id}`;
             const teacher = await axios.get(url);
             const {
@@ -81,7 +101,7 @@ const FormularioMaestros = (props) => {
     return (
         <Fragment>
             <Nav />
-            <form onSubmit={enviarForm}>
+            <form onSubmit={sendForm} noValidate className="needs-validation">
                 {redirect ? <Redirect to="/teachers" /> : null}
                 <div className="container mt-5">
                     <div className="row">
@@ -101,29 +121,34 @@ const FormularioMaestros = (props) => {
                                             <input
                                                 type="text"
                                                 name="nombre"
-                                                id=""
-                                                value={nombre}
+                                                id="nombre"
+                                                value={nombre || ""}
                                                 onChange={onChange}
                                                 className="form-control"
+                                                required
                                             />
+                                            <div className="invalid-feedback">
+                                                Por favor completa este campo.
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col">
                                         <div className="mb-2">
                                             <label
                                                 className="form-label pb-1"
-                                                htmlFor="inputGroupSelect01"
+                                                htmlFor="sexo"
                                             >
                                                 Sexo:
                                             </label>
                                             <select
                                                 className="form-select"
-                                                id="inputGroupSelect01"
-                                                value={sexo}
+                                                id="sexo"
+                                                value={sexo || ""}
                                                 name="sexo"
                                                 onChange={onChange}
+                                                required
                                             >
-                                                <option defaultValue>
+                                                <option defaultValue value="">
                                                     Selecciona una opción
                                                 </option>
                                                 <option value="H">
@@ -131,23 +156,48 @@ const FormularioMaestros = (props) => {
                                                 </option>
                                                 <option value="M">Mujer</option>
                                             </select>
+                                            <div className="invalid-feedback">
+                                                Por favor selecciona una opción.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row ps-4 pe-4 mb-3">
                                     <div className="col">
                                         <div className="mb-2">
-                                            <label className="form-label pb-1">
+                                            <label
+                                                className="form-label pb-1"
+                                                htmlFor="nombramiento"
+                                            >
                                                 Nombramiento:
                                             </label>
-                                            <input
-                                                type="text"
+                                            <select
+                                                className="form-select"
+                                                id="nombramiento"
+                                                value={nombramiento || ""}
                                                 name="nombramiento"
-                                                id=""
                                                 onChange={onChange}
-                                                value={nombramiento}
-                                                className="form-control"
-                                            />
+                                                required
+                                            >
+                                                <option value="" defaultValue>
+                                                    Selecciona una opción
+                                                </option>
+                                                <option value="Profesor tiempo completo">
+                                                    Profesor tiempo completo
+                                                </option>
+                                                <option value="Profesor 3/4 tiempo">
+                                                    Profesor 3/4 tiempo
+                                                </option>
+                                                <option value="Profesor medio tiempo">
+                                                    Profesor medio tiempo
+                                                </option>
+                                                <option value="Profesor asignatura">
+                                                    Profesor asignatura
+                                                </option>
+                                            </select>
+                                            <div className="invalid-feedback">
+                                                Por favor selecciona una opción.
+                                            </div>
                                         </div>
                                     </div>
 
@@ -155,20 +205,26 @@ const FormularioMaestros = (props) => {
                                         <div className="mb-2">
                                             <label
                                                 className="form-label pb-1"
-                                                htmlFor="inputGroupSelect01"
+                                                htmlFor="ingreso"
                                             >
                                                 Ingreso institucion:
                                             </label>
                                             <input
                                                 type="date"
                                                 name="ingreso_institucion"
-                                                id=""
+                                                id="ingreso"
                                                 onChange={onChange}
-                                                value={moment(
-                                                    ingreso_institucion
-                                                ).format("YYYY-MM-DD")}
+                                                value={
+                                                    moment(
+                                                        ingreso_institucion
+                                                    ).format("YYYY-MM-DD") || ""
+                                                }
                                                 className="form-control"
+                                                required
                                             />
+                                            <div className="invalid-feedback">
+                                                Por favor selecciona una fecha.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -179,42 +235,54 @@ const FormularioMaestros = (props) => {
                                                 Antiguedad:
                                             </label>
                                             <input
-                                                type="date"
+                                                type="text"
                                                 name="antiguedad"
-                                                id=""
-                                                value={moment(
-                                                    antiguedad
-                                                ).format("YYYY-MM-DD")}
+                                                id="antiguedad"
+                                                value={
+                                                    antiguedadNew.fechaAnt || ""
+                                                }
                                                 onChange={onChange}
                                                 className="form-control"
+                                                required
+                                                disabled
                                             />
+                                            <div className="invalid-feedback">
+                                                Por favor completa el campo.
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col">
                                         <div className="mb-2">
                                             <label
                                                 className="form-label pb-1"
-                                                htmlFor="inputGroupSelect01"
+                                                htmlFor="grado"
                                             >
                                                 Grado maximo:
                                             </label>
                                             <select
                                                 className="form-select"
-                                                id="inputGroupSelect01"
-                                                value={grado_max}
+                                                id="grado"
+                                                value={grado_max || ""}
                                                 name="grado_max"
                                                 onChange={onChange}
+                                                required
                                             >
-                                                <option defaultValue>
+                                                <option defaultValue value="">
                                                     Selecciona una opción
                                                 </option>
                                                 <option value="Licenciatura">
                                                     Licenciatura
                                                 </option>
-                                                <option value="Maestria">
-                                                    Mastria
+                                                <option value="Maestría">
+                                                    Maestría
+                                                </option>
+                                                <option value="Doctorado">
+                                                    Doctorado
                                                 </option>
                                             </select>
+                                            <div className="invalid-feedback">
+                                                Por favor selecciona una opción.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -229,7 +297,7 @@ const FormularioMaestros = (props) => {
                                             </Link>
                                             <input
                                                 type="submit"
-                                                value="Agregar"
+                                                value="Editar"
                                                 className="btn btn-dark btn-md d-flex align-items-center"
                                             />
                                         </div>
@@ -244,4 +312,4 @@ const FormularioMaestros = (props) => {
     );
 };
 
-export default FormularioMaestros;
+export default FormTeacherEdit;

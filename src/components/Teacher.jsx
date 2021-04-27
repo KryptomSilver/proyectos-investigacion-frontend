@@ -1,14 +1,18 @@
 import moment from "moment";
 import React from "react";
 import { Link } from "react-router-dom";
-
 const Maestros = ({ teacher, eliminar }) => {
     return (
         <tr>
-            <td>{teacher.nombre}</td>
-            <td>{teacher.sexo === "H" ? "Hombre" : "Mujer"}</td>
-            <td>{moment(teacher.antiguedad).format("YYYY-MM-DD")}</td>
-            <td>{teacher.nombramiento}</td>
+            <td className="text-center">{teacher.nombre}</td>
+            <td className="text-center">
+                {teacher.sexo === "H" ? "Hombre" : "Mujer"}
+            </td>
+            <td className="text-center">{`${teacher.antiguedad} años`}</td>
+            <td className="text-center">{teacher.nombramiento}</td>
+            <td className="text-center">
+                {moment(teacher.ingreso_institucion).format("YYYY/MM/DD")}
+            </td>
             <td className="d-flex align-items-center justify-content-evenly">
                 <Link
                     to={{
