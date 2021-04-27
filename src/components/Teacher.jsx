@@ -11,7 +11,7 @@ const Maestros = ({ teacher, eliminar }) => {
             <td className="text-center">{`${teacher.antiguedad} años`}</td>
             <td className="text-center">{teacher.nombramiento}</td>
             <td className="text-center">
-                {moment(teacher.ingreso_institucion).format("DD/MM/YYYY")}
+                {moment(teacher.ingreso_institucion).format("YYYY/MM/DD")}
             </td>
             <td className="d-flex align-items-center justify-content-evenly">
                 <Link

@@ -39,35 +39,45 @@ const FormTeacher = () => {
         });
     }, [ingreso_institucion]);
 
-    const enviarForm = (e) => {
-        e.preventDefault();
-        axios
-            .post("http://localhost:4000/api/teachers", {
-                nombre: nombre,
-                nombramiento: nombramiento,
-                sexo: sexo,
-                ingreso_institucion: ingreso_institucion,
-                antiguedad: antiguedadNew.fechaAnt,
-                grado_max: grado_max,
-            })
-            .then(
-                (respose) => {
-                    console.log(respose);
-                    AlertsSuccess(respose.data.message);
-                    setTimeout(() => {
-                        setRedirect(true);
-                    }, 1500);
-                    setTeacher({});
-                },
-                (error) => {
-                    console.log(error);
-                }
-            );
+    const sendForm = (e) => {
+        var forms = document.querySelectorAll(".needs-validation");
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            if (!form.checkValidity()) {
+                e.preventDefault();
+                e.stopPropagation();
+                form.classList.add("was-validated");
+            } else {
+                e.preventDefault();
+                axios
+                    .post("http://localhost:4000/api/teachers", {
+                        nombre: nombre,
+                        nombramiento: nombramiento,
+                        sexo: sexo,
+                        ingreso_institucion: ingreso_institucion,
+                        antiguedad: antiguedadNew.fechaAnt,
+                        grado_max: grado_max,
+                    })
+                    .then(
+                        (respose) => {
+                            console.log(respose);
+                            AlertsSuccess(respose.data.message);
+                            setTimeout(() => {
+                                setRedirect(true);
+                            }, 1500);
+                            setTeacher({});
+                            form.classList.remove("was-validated");
+                        },
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
+            }
+        });
     };
     return (
         <Fragment>
             <Nav />
-            <form onSubmit={enviarForm}>
+            <form onSubmit={sendForm} noValidate className="needs-validation">
                 {redirect ? <Redirect to="/teachers" /> : null}
                 <div className="container mt-5">
                     <div className="row">
@@ -80,7 +90,7 @@ const FormTeacher = () => {
                                 </div>
                                 <div className="row ps-4 pe-4 pt-4 mb-3">
                                     <div className="col">
-                                        <div className="mb-2">
+                                        <div className="form-group">
                                             <label className="form-label pb-1">
                                                 Nombre:
                                             </label>
@@ -93,10 +103,13 @@ const FormTeacher = () => {
                                                 className="form-control"
                                                 required
                                             />
+                                            <div className="invalid-feedback">
+                                                Por favor completa este campo.
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <div className="mb-2">
+                                        <div className="form-group">
                                             <label
                                                 className="form-label pb-1"
                                                 htmlFor="sexo"
@@ -119,12 +132,15 @@ const FormTeacher = () => {
                                                 </option>
                                                 <option value="M">Mujer</option>
                                             </select>
+                                            <div className="invalid-feedback">
+                                                Por favor selecciona una opción.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row ps-4 pe-4 mb-3">
                                     <div className="col">
-                                        <div className="mb-2">
+                                        <div className="form-group">
                                             <label
                                                 className="form-label pb-1"
                                                 htmlFor="nombramiento"
@@ -155,10 +171,13 @@ const FormTeacher = () => {
                                                     Profesor asignatura
                                                 </option>
                                             </select>
+                                            <div className="invalid-feedback">
+                                                Por favor selecciona una opción.
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <div className="mb-2">
+                                        <div className="form-group">
                                             <label
                                                 className="form-label pb-1"
                                                 htmlFor="ingreso"
@@ -176,12 +195,15 @@ const FormTeacher = () => {
                                                 className="form-control"
                                                 required
                                             />
+                                            <div className="invalid-feedback">
+                                                Por favor selecciona una fecha.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row ps-4 pe-4 mb-3">
                                     <div className="col">
-                                        <div className="mb-2">
+                                        <div className="form-group">
                                             <label className="form-label pb-1">
                                                 Antiguedad:
                                             </label>
@@ -200,7 +222,7 @@ const FormTeacher = () => {
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <div className="mb-2">
+                                        <div className="form-group">
                                             <label
                                                 className="form-label pb-1"
                                                 htmlFor="grado"
@@ -228,6 +250,9 @@ const FormTeacher = () => {
                                                     Doctorado
                                                 </option>
                                             </select>
+                                            <div className="invalid-feedback">
+                                                Por favor selecciona una opción.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

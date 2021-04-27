@@ -41,29 +41,39 @@ const FormTeacherEdit = (props) => {
             fechaAnt,
         });
     }, [ingreso_institucion]);
-    const enviarForm = (e) => {
-        e.preventDefault();
-        axios
-            .put(`http://localhost:4000/api/teachers/${id}`, {
-                nombre,
-                nombramiento,
-                sexo,
-                ingreso_institucion,
-                "antiguedad":antiguedadNew.fechaAnt,
-                grado_max,
-            })
-            .then(
-                (respose) => {
-                    AlertsSuccess(respose.data.message);
-                    setTimeout(() => {
-                        setRedirect(true);
-                    }, 1500);
-                    setTeacher({});
-                },
-                (error) => {
-                    console.log(error);
-                }
-            );
+    const sendForm = (e) => {
+        var forms = document.querySelectorAll(".needs-validation");
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            if (!form.checkValidity()) {
+                e.preventDefault();
+                e.stopPropagation();
+                form.classList.add("was-validated");
+            } else {
+                e.preventDefault();
+                axios
+                    .put(`http://localhost:4000/api/teachers/${id}`, {
+                        nombre,
+                        nombramiento,
+                        sexo,
+                        ingreso_institucion,
+                        antiguedad: antiguedadNew.fechaAnt,
+                        grado_max,
+                    })
+                    .then(
+                        (respose) => {
+                            AlertsSuccess(respose.data.message);
+                            setTimeout(() => {
+                                setRedirect(true);
+                            }, 1500);
+                            setTeacher({});
+                            form.classList.remove("was-validated");
+                        },
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
+            }
+        });
     };
     useEffect(() => {
         const consultarTeacher = async () => {
@@ -91,7 +101,7 @@ const FormTeacherEdit = (props) => {
     return (
         <Fragment>
             <Nav />
-            <form onSubmit={enviarForm}>
+            <form onSubmit={sendForm} noValidate className="needs-validation">
                 {redirect ? <Redirect to="/teachers" /> : null}
                 <div className="container mt-5">
                     <div className="row">
@@ -117,6 +127,9 @@ const FormTeacherEdit = (props) => {
                                                 className="form-control"
                                                 required
                                             />
+                                            <div className="invalid-feedback">
+                                                Por favor completa este campo.
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col">
@@ -143,6 +156,9 @@ const FormTeacherEdit = (props) => {
                                                 </option>
                                                 <option value="M">Mujer</option>
                                             </select>
+                                            <div className="invalid-feedback">
+                                                Por favor selecciona una opción.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -179,6 +195,9 @@ const FormTeacherEdit = (props) => {
                                                     Profesor asignatura
                                                 </option>
                                             </select>
+                                            <div className="invalid-feedback">
+                                                Por favor selecciona una opción.
+                                            </div>
                                         </div>
                                     </div>
 
@@ -203,6 +222,9 @@ const FormTeacherEdit = (props) => {
                                                 className="form-control"
                                                 required
                                             />
+                                            <div className="invalid-feedback">
+                                                Por favor selecciona una fecha.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -216,12 +238,17 @@ const FormTeacherEdit = (props) => {
                                                 type="text"
                                                 name="antiguedad"
                                                 id="antiguedad"
-                                                value={antiguedadNew.fechaAnt || ""}
+                                                value={
+                                                    antiguedadNew.fechaAnt || ""
+                                                }
                                                 onChange={onChange}
                                                 className="form-control"
                                                 required
                                                 disabled
                                             />
+                                            <div className="invalid-feedback">
+                                                Por favor completa el campo.
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col">
@@ -253,6 +280,9 @@ const FormTeacherEdit = (props) => {
                                                     Doctorado
                                                 </option>
                                             </select>
+                                            <div className="invalid-feedback">
+                                                Por favor selecciona una opción.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
