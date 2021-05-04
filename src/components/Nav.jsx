@@ -42,6 +42,11 @@ const Nav = () => {
                                 Maestros
                             </Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/academicbs">
+                                Cuerpos Académicos
+                            </Link>
+                        </li>
                     </ul>
                     <form className="d-flex">
                         <button
