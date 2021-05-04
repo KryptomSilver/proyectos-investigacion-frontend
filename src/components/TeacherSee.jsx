@@ -4,7 +4,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
 
-const FormularioMaestros = (props) => {
+const TeacherSee = (props) => {
     const id = props.location.state.id;
     const [teacher, setTeacher] = useState({
         nombre: "",
@@ -230,4 +230,4 @@ const FormularioMaestros = (props) => {
     );
 };
 
-export default FormularioMaestros;
+export default TeacherSee;

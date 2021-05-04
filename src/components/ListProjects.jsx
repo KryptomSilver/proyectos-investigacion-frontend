@@ -19,7 +19,7 @@ const ListProjects = () => {
     useEffect(() => {
         const consultAPI = async () => {
             const projectsPagina = 5;
-            const url = `http://192.168.1.74:4000/api/projects?&page=${
+            const url = `http://localhost:4000/api/projects?&page=${
                 paginaactual - 1
             }&size=${projectsPagina}`;
             const projects = await axios.get(url);
@@ -55,7 +55,7 @@ const ListProjects = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 const eliminarAPI = async () => {
-                    const url = `http://192.168.1.74:4000/api/projects/${id}`;
+                    const url = `http://localhost:4000/api/projects/${id}`;
                     const respuesta = await axios.delete(url);
                     if (respuesta.status === 200) {
                         AlertsSuccess(respuesta.data.message);
@@ -88,7 +88,7 @@ const ListProjects = () => {
                                 <th className="text-center">Nombre proyecto</th>
                                 <th className="text-center">Lider</th>
                                 <th className="text-center">
-                                    Tipo finanzamiento
+                                    Tipo financiamiento
                                 </th>
                                 <th className="text-center">Programa</th>
                                 <th className="text-center">Fecha inicio</th>
@@ -127,7 +127,7 @@ const ListProjects = () => {
                             </li>
 
                             <li className="page-item">
-                                {paginaactual === totalpaginas ? null : (
+                                {paginaactual === totalpaginas ? (
                                     <button
                                         onClick={paginaSiguiente}
                                         className="page-link"
@@ -136,7 +136,7 @@ const ListProjects = () => {
                                     >
                                         <span aria-hidden="true">&raquo;</span>
                                     </button>
-                                )}
+                                ) : null}
                             </li>
                         </ul>
                     </nav>

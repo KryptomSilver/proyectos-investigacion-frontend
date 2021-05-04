@@ -14,7 +14,7 @@ const FormProjectEdit = (props) => {
     const [project, setProject] = useState({
         lider: "",
         nom_proyecto: "",
-        tipo_finanzamiento: "",
+        tipo_financiamiento: "",
         programa: "",
         fecha_inicio: "",
         fecha_fin: "",
@@ -24,7 +24,7 @@ const FormProjectEdit = (props) => {
     const {
         lider,
         nom_proyecto,
-        tipo_finanzamiento,
+        tipo_financiamiento,
         programa,
         fecha_inicio,
         fecha_fin,
@@ -44,7 +44,7 @@ const FormProjectEdit = (props) => {
             const {
                 lider,
                 nom_proyecto,
-                tipo_finanzamiento,
+                tipo_financiamiento,
                 programa,
                 fecha_inicio,
                 fecha_fin,
@@ -53,7 +53,7 @@ const FormProjectEdit = (props) => {
             setProject({
                 lider,
                 nom_proyecto,
-                tipo_finanzamiento,
+                tipo_financiamiento,
                 programa,
                 fecha_inicio,
                 fecha_fin,
@@ -62,6 +62,16 @@ const FormProjectEdit = (props) => {
         };
         consultarProject();
     }, [id]);
+    //usestate para maestros
+    const [teachers, setTeachers] = useState([]);
+    useEffect(() => {
+        const consultAPI = async () => {
+            const url = `http://localhost:4000/api/teachers/all`;
+            const teachers = await axios.get(url);
+            setTeachers(teachers.data);
+        };
+        consultAPI();
+    }, []);
     const sendForm = (e) => {
         var forms = document.querySelectorAll(".needs-validation");
         Array.prototype.slice.call(forms).forEach(function (form) {
@@ -75,7 +85,7 @@ const FormProjectEdit = (props) => {
                     .put(`http://localhost:4000/api/projects/${id}`, {
                         lider,
                         nom_proyecto,
-                        tipo_finanzamiento,
+                        tipo_financiamiento,
                         programa,
                         fecha_inicio,
                         fecha_fin,
@@ -140,15 +150,22 @@ const FormProjectEdit = (props) => {
                                             >
                                                 Lider:
                                             </label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="lider"
-                                                value={lider || ""}
+                                            <select
                                                 name="lider"
+                                                id="lider"
+                                                className="form-select"
+                                                value={lider || ""}
                                                 onChange={onChange}
-                                                required
-                                            />
+                                            >
+                                                <option value="" defaultValue>
+                                                    Selecciona una opción
+                                                </option>
+                                                {teachers.map((teacher) => (
+                                                    <option value={teacher._id} key={teacher._id}>
+                                                        {teacher.nombre}
+                                                    </option>
+                                                ))}
+                                            </select>
                                             <div className="invalid-feedback">
                                                 Por favor completa este campo.
                                             </div>
@@ -160,19 +177,33 @@ const FormProjectEdit = (props) => {
                                         <div className="form-group">
                                             <label
                                                 className="form-label pb-1"
-                                                htmlFor="tipo_finanzamiento"
+                                                htmlFor="tipo_financiamiento"
                                             >
-                                                Tipo finalizamiento:
+                                                Tipo financiamiento:
                                             </label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="tipo_finanzamiento"
-                                                value={tipo_finanzamiento || ""}
-                                                name="tipo_finanzamiento"
+                                            <select
+                                                className="form-select"
+                                                id="tipo_financiamiento"
+                                                value={
+                                                    tipo_financiamiento || ""
+                                                }
+                                                name="tipo_financiamiento"
                                                 onChange={onChange}
                                                 required
-                                            />
+                                            >
+                                                <option value="" defaultValue>
+                                                    Selecciona una opción
+                                                </option>
+                                                <option value="CONACYT">
+                                                    CONACYT
+                                                </option>
+                                                <option value="TECNM">
+                                                    TECNM
+                                                </option>
+                                                <option value="PRODEP">
+                                                    PRODEP
+                                                </option>
+                                            </select>
                                             <div className="invalid-feedback">
                                                 Por favor completa este campo.
                                             </div>
@@ -214,9 +245,11 @@ const FormProjectEdit = (props) => {
                                                 type="date"
                                                 className="form-control"
                                                 id="fecha_inicio"
-                                                value={moment(
-                                                    fecha_inicio
-                                                ).format("YYYY-MM-DD") || ""}
+                                                value={
+                                                    moment(fecha_inicio).format(
+                                                        "YYYY-MM-DD"
+                                                    ) || ""
+                                                }
                                                 name="fecha_inicio"
                                                 onChange={onChange}
                                                 required
@@ -238,9 +271,11 @@ const FormProjectEdit = (props) => {
                                                 type="date"
                                                 className="form-control"
                                                 id="fecha_fin"
-                                                value={moment(
-                                                    fecha_fin
-                                                ).format("YYYY-MM-DD") || ""}
+                                                value={
+                                                    moment(fecha_fin).format(
+                                                        "YYYY-MM-DD"
+                                                    ) || ""
+                                                }
                                                 name="fecha_fin"
                                                 onChange={onChange}
                                                 required

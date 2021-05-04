@@ -1,7 +1,7 @@
 import moment from "moment";
 import React from "react";
 import { Link } from "react-router-dom";
-const Maestros = ({ teacher, eliminar }) => {
+const Teacher = ({ teacher, eliminar }) => {
     return (
         <tr>
             <td className="text-center">{teacher.nombre}</td>
@@ -46,4 +46,4 @@ const Maestros = ({ teacher, eliminar }) => {
     );
 };
 
-export default Maestros;
+export default Teacher;

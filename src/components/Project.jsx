@@ -1,13 +1,28 @@
-import moment from 'moment'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import axios from "axios";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-const Project = ({project,eliminar}) => {
+const Project = ({ project, eliminar }) => {
+    //usestate para maestros
+    const [teachers, setTeachers] = useState([]);
+    useEffect(() => {
+        const consultAPI = async () => {
+            const url = `http://localhost:4000/api/teachers/all`;
+            const teachers = await axios.get(url);
+            setTeachers(teachers.data);
+        };
+        consultAPI();
+    }, []);
     return (
         <tr>
             <td className="text-center">{project.nom_proyecto}</td>
-            <td className="text-center">{project.lider}</td>
-            <td className="text-center">{project.tipo_finanzamiento}</td>
+            <td className="text-center">
+                {teachers.map((teacher) =>
+                    project.lider === teacher._id ? teacher.nombre : null
+                )}
+            </td>
+            <td className="text-center">{project.tipo_financiamiento}</td>
 
             <td className="text-center">{project.programa}</td>
 
@@ -47,7 +62,7 @@ const Project = ({project,eliminar}) => {
                 </Link>
             </td>
         </tr>
-    )
-}
+    );
+};
 
-export default Project
+export default Project;

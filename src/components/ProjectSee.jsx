@@ -10,7 +10,7 @@ const ProjectSee = (props) => {
     const [project, setProject] = useState({
         lider: "",
         nom_proyecto: "",
-        tipo_finanzamiento: "",
+        tipo_financiamiento: "",
         programa: "",
         fecha_inicio: "",
         fecha_fin: "",
@@ -20,7 +20,7 @@ const ProjectSee = (props) => {
     const {
         lider,
         nom_proyecto,
-        tipo_finanzamiento,
+        tipo_financiamiento,
         programa,
         fecha_inicio,
         fecha_fin,
@@ -33,7 +33,7 @@ const ProjectSee = (props) => {
             const {
                 lider,
                 nom_proyecto,
-                tipo_finanzamiento,
+                tipo_financiamiento,
                 programa,
                 fecha_inicio,
                 fecha_fin,
@@ -42,7 +42,7 @@ const ProjectSee = (props) => {
             setProject({
                 lider,
                 nom_proyecto,
-                tipo_finanzamiento,
+                tipo_financiamiento,
                 programa,
                 fecha_inicio,
                 fecha_fin,
@@ -51,6 +51,16 @@ const ProjectSee = (props) => {
         };
         consultarProject();
     }, [id]);
+    //usestate para maestros
+    const [teachers, setTeachers] = useState([]);
+    useEffect(() => {
+        const consultAPI = async () => {
+            const url = `http://localhost:4000/api/teachers/all`;
+            const teachers = await axios.get(url);
+            setTeachers(teachers.data);
+        };
+        consultAPI();
+    }, []);
     return (
         <Fragment>
             <Nav />
@@ -60,9 +70,7 @@ const ProjectSee = (props) => {
                         <div className="col">
                             <div className="card">
                                 <div className="card-header bg-dark text-center">
-                                    <h4 className="text-white">
-                                        Proyecto
-                                    </h4>
+                                    <h4 className="text-white">Proyecto</h4>
                                 </div>
                                 <div className="row ps-4 pe-4 pt-4 mb-3">
                                     <div className="col">
@@ -75,7 +83,6 @@ const ProjectSee = (props) => {
                                                 name="nom_proyecto"
                                                 id="nom_proyecto"
                                                 value={nom_proyecto || ""}
-                                                
                                                 className="form-control"
                                                 disabled
                                             />
@@ -92,15 +99,25 @@ const ProjectSee = (props) => {
                                             >
                                                 Lider:
                                             </label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="lider"
-                                                value={lider || ""}
+                                            <select
                                                 name="lider"
-                                                
+                                                id="lider"
+                                                className="form-select"
+                                                value={lider || ""}
                                                 disabled
-                                            />
+                                            >
+                                                <option value="" defaultValue>
+                                                    Selecciona una opción
+                                                </option>
+                                                {teachers.map((teacher) => (
+                                                    <option
+                                                        value={teacher._id}
+                                                        key={teacher._id}
+                                                    >
+                                                        {teacher.nombre}
+                                                    </option>
+                                                ))}
+                                            </select>
                                             <div className="invalid-feedback">
                                                 Por favor completa este campo.
                                             </div>
@@ -112,22 +129,33 @@ const ProjectSee = (props) => {
                                         <div className="form-group">
                                             <label
                                                 className="form-label pb-1"
-                                                htmlFor="tipo_finanzamiento"
+                                                htmlFor="tipo_financiamiento"
                                             >
-                                                Tipo finalizamiento:
+                                                Tipo financiamiento:
                                             </label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="tipo_finanzamiento"
-                                                value={tipo_finanzamiento || ""}
-                                                name="tipo_finanzamiento"
-                                                
+                                            <select
+                                                className="form-select"
+                                                id="tipo_financiamiento"
+                                                value={
+                                                    tipo_financiamiento || ""
+                                                }
+                                                name="tipo_financiamiento"
+                                                required
                                                 disabled
-                                            />
-                                            <div className="invalid-feedback">
-                                                Por favor completa este campo.
-                                            </div>
+                                            >
+                                                <option value="" defaultValue>
+                                                    Selecciona una opción
+                                                </option>
+                                                <option value="CONACYT">
+                                                    CONACYT
+                                                </option>
+                                                <option value="TECNM">
+                                                    TECNM
+                                                </option>
+                                                <option value="PRODEP">
+                                                    PRODEP
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div className="col">
@@ -144,7 +172,6 @@ const ProjectSee = (props) => {
                                                 id="programa"
                                                 value={programa || ""}
                                                 name="programa"
-                                                
                                                 disabled
                                             />
                                             <div className="invalid-feedback">
@@ -172,7 +199,6 @@ const ProjectSee = (props) => {
                                                     ) || ""
                                                 }
                                                 name="fecha_inicio"
-                                                
                                                 disabled
                                             />
                                             <div className="invalid-feedback">
@@ -198,7 +224,6 @@ const ProjectSee = (props) => {
                                                     ) || ""
                                                 }
                                                 name="fecha_fin"
-                                                
                                                 disabled
                                             />
                                             <div className="invalid-feedback">
@@ -220,7 +245,6 @@ const ProjectSee = (props) => {
                                                 id="no_participantes"
                                                 value={no_participantes || ""}
                                                 name="no_participantes"
-                                                
                                                 disabled
                                             />
                                             <div className="invalid-feedback">

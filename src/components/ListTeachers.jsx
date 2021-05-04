@@ -18,7 +18,9 @@ const ListTeachers = () => {
     useEffect(() => {
         const consultAPI = async () => {
             const maestrosPagina = 5;
-            const url = `http://192.168.1.74:4000/api/teachers?&page=${paginaactual-1}&size=${maestrosPagina}`;
+            const url = `http://localhost:4000/api/teachers?&page=${
+                paginaactual - 1
+            }&size=${maestrosPagina}`;
             const teachers = await axios.get(url);
             const calcularPaginas = Math.ceil(
                 teachers.data.totalDocs / maestrosPagina
@@ -51,7 +53,7 @@ const ListTeachers = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 const eliminarAPI = async () => {
-                    const url = `http://192.168.1.74:4000/api/teachers/${id}`;
+                    const url = `http://localhost:4000/api/teachers/${id}`;
                     const respuesta = await axios.delete(url);
                     if (respuesta.status === 200) {
                         AlertsSuccess(respuesta.data.message);
@@ -75,7 +77,10 @@ const ListTeachers = () => {
                     </Link>
                 </div>
                 <div className="table-responsive">
-                    <table className="table table-bordered mt-4" style={{fontSize:".8rem"}}>
+                    <table
+                        className="table table-bordered mt-4"
+                        style={{ fontSize: ".8rem" }}
+                    >
                         <thead className="table-dark">
                             <tr>
                                 <th className="text-center">Nombre</th>
@@ -119,16 +124,16 @@ const ListTeachers = () => {
                             </li>
 
                             <li className="page-item">
-                            {paginaactual === totalpaginas ? null : (
-                                <button
-                                    onClick={paginaSiguiente}
-                                    className="page-link"
-                                    href="#"
-                                    aria-label="Next"
-                                >
-                                    <span aria-hidden="true">&raquo;</span>
-                                </button>
-                            )}
+                                {paginaactual === totalpaginas ? (
+                                    <button
+                                        onClick={paginaSiguiente}
+                                        className="page-link"
+                                        href="#"
+                                        aria-label="Next"
+                                    >
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </button>
+                                ) : null}
                             </li>
                         </ul>
                     </nav>

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { AlertsSuccess } from "./alerts";
 import axios from "axios";
@@ -10,7 +10,7 @@ const FormProject = () => {
     const [project, setProject] = useState({
         lider: "",
         nom_proyecto: "",
-        tipo_finanzamiento: "",
+        tipo_financiamiento: "",
         programa: "",
         fecha_inicio: "",
         fecha_fin: "",
@@ -20,7 +20,7 @@ const FormProject = () => {
     const {
         lider,
         nom_proyecto,
-        tipo_finanzamiento,
+        tipo_financiamiento,
         programa,
         fecha_inicio,
         fecha_fin,
@@ -33,6 +33,17 @@ const FormProject = () => {
             [e.target.name]: e.target.value,
         });
     };
+    //usestate para maestros
+    const [teachers, setTeachers] = useState([]);
+    useEffect(() => {
+        const consultAPI = async () => {
+            const url = `http://localhost:4000/api/teachers/all`;
+            const teachers = await axios.get(url);
+            setTeachers(teachers.data);
+            console.log(teachers.data);
+        };
+        consultAPI();
+    }, []);
     const sendForm = (e) => {
         var forms = document.querySelectorAll(".needs-validation");
         Array.prototype.slice.call(forms).forEach(function (form) {
@@ -46,7 +57,7 @@ const FormProject = () => {
                     .post("http://localhost:4000/api/projects", {
                         lider,
                         nom_proyecto,
-                        tipo_finanzamiento,
+                        tipo_financiamiento,
                         programa,
                         fecha_inicio,
                         fecha_fin,
@@ -111,15 +122,22 @@ const FormProject = () => {
                                             >
                                                 Lider:
                                             </label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="lider"
-                                                value={lider || ""}
+                                            <select
                                                 name="lider"
+                                                id="lider"
+                                                className="form-select"
+                                                value={lider || ""}
                                                 onChange={onChange}
-                                                required
-                                            />
+                                            >
+                                                <option value="" defaultValue>
+                                                    Selecciona una opción
+                                                </option>
+                                                {teachers.map((teacher) => (
+                                                    <option value={teacher._id}>
+                                                        {teacher.nombre}
+                                                    </option>
+                                                ))}
+                                            </select>
                                             <div className="invalid-feedback">
                                                 Por favor completa este campo.
                                             </div>
@@ -131,19 +149,33 @@ const FormProject = () => {
                                         <div className="form-group">
                                             <label
                                                 className="form-label pb-1"
-                                                htmlFor="tipo_finanzamiento"
+                                                htmlFor="tipo_financiamiento"
                                             >
-                                                Tipo finalizamiento:
+                                                Tipo financiamiento:
                                             </label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                id="tipo_finanzamiento"
-                                                value={tipo_finanzamiento || ""}
-                                                name="tipo_finanzamiento"
+                                            <select
+                                                className="form-select"
+                                                id="tipo_financiamiento"
+                                                value={
+                                                    tipo_financiamiento || ""
+                                                }
+                                                name="tipo_financiamiento"
                                                 onChange={onChange}
                                                 required
-                                            />
+                                            >
+                                                <option value="" defaultValue>
+                                                    Selecciona una opción
+                                                </option>
+                                                <option value="CONACYT">
+                                                    CONACYT
+                                                </option>
+                                                <option value="TECNM">
+                                                    TECNM
+                                                </option>
+                                                <option value="PRODEP">
+                                                    PRODEP
+                                                </option>
+                                            </select>
                                             <div className="invalid-feedback">
                                                 Por favor completa este campo.
                                             </div>
@@ -235,11 +267,11 @@ const FormProject = () => {
                                                 required
                                             />
                                             <div className="invalid-feedback">
-                                                Por favor ingresa numero de participantes.
+                                                Por favor ingresa numero de
+                                                participantes.
                                             </div>
                                         </div>
                                     </div>
-                                    
                                 </div>
                                 <div className="row ps-4 pe-4 mb-3">
                                     <div className="col">
