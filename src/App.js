@@ -4,6 +4,10 @@ import ListTeachers from "./components/ListTeachers";
 import FormTeacherEdit from "./components/FormTeacherEdit";
 import TeacherSee from "./components/TeacherSee";
 import Templeate from './components/Templeate'
+import ListAcademicBs from "./components/ListAcademicBs";
+import FormAcademicB from "./components/FormAcademicB";
+import AcademicBSee from "./components/AcademicBSee";
+import FormAcademicBEdit from "./components/FormAcademicBEdit";
 
 
 function App() {
@@ -18,7 +22,13 @@ function App() {
                 />
                 <Route exact path="/teacheredit" component={FormTeacherEdit} />
                 <Route exact path="/teachersee" component={TeacherSee} />
+                <Route exact path="/academicbs" component={ListAcademicBs} />
+                <Route exact path="/academicbform" component={FormAcademicB} />
+                <Route exact path="/academicbsee" component={AcademicBSee} />
+                <Route exact path="/academicbedit" component={FormAcademicBEdit} />
+
                 <Route  path="/" component={Templeate} />
+
                
             </Switch>
         </Router>
