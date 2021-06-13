@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+import authContext from "../context/auth/authContext";
 import logo from "../logo.svg";
 
 const Nav = () => {
+    // Extraer la información de autenticación
+    const authcontext = useContext(authContext);
+    const { usuarioAutenticado, cerrarSesion } = authcontext;
+
+    useEffect(() => {
+        usuarioAutenticado();
+        // eslint-disable-next-line
+    }, []);
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
@@ -33,6 +43,11 @@ const Nav = () => {
                 >
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
+                            <Link className="nav-link" to="/">
+                                Home
+                            </Link>
+                        </li>
+                        <li className="nav-item">
                             <Link className="nav-link" to="/projects">
                                 Proyectos
                             </Link>
@@ -50,10 +65,11 @@ const Nav = () => {
                     </ul>
                     <form className="d-flex">
                         <button
-                            className="btn btn btn-outline-light d-flex  align-items-center "
+                            className="btn btn btn-outline-danger d-flex  align-items-center "
                             type="submit"
+                            onClick={() => cerrarSesion()}
                         >
-                            Login
+                            Cerrar sesión
                             <span id="login" className="ps-1 material-icons">
                                 &#xea77;
                             </span>
