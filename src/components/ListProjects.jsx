@@ -1,35 +1,28 @@
 import axios from "axios";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import clienteAxios from "../config/axios";
+import projectContext from "../context/projects/projectContext";
 import { AlertsSuccess } from "./alerts";
 import Nav from "./Nav";
 import Project from "./Project";
 const ListProjects = () => {
-    //state para los proyectos
-    const [projects, setProjects] = useState([]);
     //state para modal eliminar
     const [alerteliminar, setAlerteliminar] = useState(true);
     //state para la pagina actual
     const [paginaactual, setPaginaactual] = useState(1);
     //state para el total de paginas
     const [totalpaginas, setTotalpaginas] = useState(1);
-
+    const projectcontext = useContext(projectContext);
+    const { projects, getProjects } = projectcontext;
     //Consultar api
     useEffect(() => {
-        const consultAPI = async () => {
-            const projectsPagina = 5;
-            const url = `http://localhost:4000/api/projects?&page=${
-                paginaactual - 1
-            }&size=${projectsPagina}`;
-            const projects = await axios.get(url);
-            const calcularPaginas = Math.ceil(
-                projects.data.totalDocs / projectsPagina
-            );
-            setTotalpaginas(calcularPaginas);
-            setProjects(projects.data.docs);
+        const calPages = async () => {
+            const paginas = await getProjects(paginaactual, 5);
+            setTotalpaginas(paginas);
         };
-        consultAPI();
+        calPages();
     }, [alerteliminar, paginaactual]);
     //funcion para la pagina anterior
     const paginaAnterior = () => {
@@ -109,8 +102,19 @@ const ListProjects = () => {
                     </table>
                     <nav className="d-flex justify-content-end pe-1">
                         <ul className="pagination ">
-                            <li className="page-item">
-                                {paginaactual === 1 ? null : (
+                            {paginaactual === 1 ? (
+                                <li className="page-item disabled">
+                                    <button
+                                        onClick={paginaAnterior}
+                                        className="page-link"
+                                        aria-label="Previous"
+                                        disabled
+                                    >
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </button>
+                                </li>
+                            ) : (
+                                <li className="page-item">
                                     <button
                                         onClick={paginaAnterior}
                                         className="page-link"
@@ -118,16 +122,29 @@ const ListProjects = () => {
                                     >
                                         <span aria-hidden="true">&laquo;</span>
                                     </button>
-                                )}
-                            </li>
+                                </li>
+                            )}
+
                             <li className="page-item disabled">
                                 <button className="page-link " disabled>
                                     ...
                                 </button>
                             </li>
 
-                            <li className="page-item">
-                                {paginaactual === totalpaginas ? (
+                            {paginaactual === totalpaginas ? (
+                                <li className="page-item disabled">
+                                    <button
+                                        onClick={paginaSiguiente}
+                                        className="page-link"
+                                        href="#"
+                                        aria-label="Next"
+                                        disabled
+                                    >
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </button>
+                                </li>
+                            ) : (
+                                <li className="page-item">
                                     <button
                                         onClick={paginaSiguiente}
                                         className="page-link"
@@ -136,8 +153,8 @@ const ListProjects = () => {
                                     >
                                         <span aria-hidden="true">&raquo;</span>
                                     </button>
-                                ) : null}
-                            </li>
+                                </li>
+                            )}
                         </ul>
                     </nav>
                 </div>

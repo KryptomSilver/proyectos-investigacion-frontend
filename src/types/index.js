@@ -2,3 +2,9 @@ export const OBTENER_USUARIO = 'OBTENER_USUARIO';
 export const LOGIN_EXITOSO = 'LOGIN_EXITOSO';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const CERRAR_SESION = 'CERRAR_SESION';
+
+export const CREATE_PROJECT = 'CREATE_PROJECT';
+export const DELETE_PROJECT = 'DELETE_PROJECT';
+export const UPDATE_PROJECT = 'UPDATE_PROJECT';
+export const GET_PROJECTS = 'GET_PROJECTS';
+export const GET_PROJECT = 'GET_PROJECT';
