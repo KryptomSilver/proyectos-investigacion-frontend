@@ -1,18 +1,25 @@
-import axios from "axios";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import clienteAxios from "../config/axios";
 
 const Project = ({ project, eliminar }) => {
     //usestate para maestros
     const [teachers, setTeachers] = useState([]);
+    const [careers, setCareers] = useState([]);
     useEffect(() => {
-        const consultAPI = async () => {
+        const getTeachers = async () => {
             const url = `http://localhost:4000/api/teachers/all`;
-            const teachers = await axios.get(url);
+            const teachers = await clienteAxios.get(url);
             setTeachers(teachers.data);
         };
-        consultAPI();
+        const getCareers = async () => {
+            const url = `http://localhost:4000/api/careers/all`;
+            const careers = await clienteAxios.get(url);
+            setCareers(careers.data);
+        };
+        getTeachers();
+        getCareers();
     }, []);
     return (
         <tr>
@@ -24,7 +31,11 @@ const Project = ({ project, eliminar }) => {
             </td>
             <td className="text-center">{project.tipo_financiamiento}</td>
 
-            <td className="text-center">{project.programa}</td>
+            <td className="text-center">
+                {careers.map((career) =>
+                    project.programa === career._id ? career.nombre : null
+                )}
+            </td>
 
             <td className="text-center">
                 {moment(project.fecha_inicio).format("YYYY/MM/DD")}

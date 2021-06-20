@@ -2,6 +2,7 @@ import axios from "axios";
 import moment from "moment";
 import React, { Fragment, useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
+import clienteAxios from "../config/axios";
 import { AlertsSuccess } from "./alerts";
 import Nav from "./Nav";
 
@@ -50,7 +51,7 @@ const FormTeacherEdit = (props) => {
                 form.classList.add("was-validated");
             } else {
                 e.preventDefault();
-                axios
+                clienteAxios
                     .put(`http://localhost:4000/api/teachers/${id}`, {
                         nombre,
                         nombramiento,

@@ -24,7 +24,7 @@ const Nav = () => {
                         height="24"
                         className="d-inline-block align-text-top me-1"
                     />
-                    SIITEC 2
+                    PRODEP
                 </a>
                 <button
                     className="navbar-toggler"

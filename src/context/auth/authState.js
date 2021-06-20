@@ -1,7 +1,12 @@
 import React, { useReducer } from "react";
 import clienteAxios from "../../config/axios";
 import tokenAuth from "../../config/token";
-import { CERRAR_SESION, LOGIN_ERROR, LOGIN_EXITOSO, OBTENER_USUARIO } from "../../types";
+import {
+    CERRAR_SESION,
+    LOGIN_ERROR,
+    LOGIN_EXITOSO,
+    OBTENER_USUARIO,
+} from "../../types";
 import AutContext from "./authContext";
 import authReducer from "./authReducer";
 
@@ -18,7 +23,7 @@ const AuthState = (props) => {
         const token = localStorage.getItem("token");
         if (token) {
             tokenAuth(token);
-        }else{
+        } else {
             return;
         }
 
@@ -32,8 +37,8 @@ const AuthState = (props) => {
         } catch (error) {
             // console.log(error.response);
             dispatch({
-                type: LOGIN_ERROR
-            })
+                type: LOGIN_ERROR,
+            });
         }
     };
     // Cuando el usuario inicia sesión

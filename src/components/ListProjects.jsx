@@ -1,8 +1,6 @@
-import axios from "axios";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import clienteAxios from "../config/axios";
 import projectContext from "../context/projects/projectContext";
 import { AlertsSuccess } from "./alerts";
 import Nav from "./Nav";
@@ -14,8 +12,10 @@ const ListProjects = () => {
     const [paginaactual, setPaginaactual] = useState(1);
     //state para el total de paginas
     const [totalpaginas, setTotalpaginas] = useState(1);
+    //Context de proyectos
     const projectcontext = useContext(projectContext);
-    const { projects, getProjects } = projectcontext;
+    const { projects, getProjects, deleteProject } = projectcontext;
+
     //Consultar api
     useEffect(() => {
         const calPages = async () => {
@@ -48,10 +48,9 @@ const ListProjects = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 const eliminarAPI = async () => {
-                    const url = `http://localhost:4000/api/projects/${id}`;
-                    const respuesta = await axios.delete(url);
-                    if (respuesta.status === 200) {
-                        AlertsSuccess(respuesta.data.message);
+                    const response = await deleteProject(id);
+                    if (response.status === 200) {
+                        AlertsSuccess(response.data.message);
                     }
                     setAlerteliminar(true);
                 };
@@ -67,10 +66,11 @@ const ListProjects = () => {
             <div className="container">
                 <h1 className="text-center mt-2">Proyectos</h1>
                 <div className="d-flex align-items-center justify-content-end mt-3">
-                    <Link to="/projectform" className="btn btn-dark">
+                    <Link to="/projectadd" className="btn btn-dark">
                         Agregar
                     </Link>
                 </div>
+
                 <div className="table-responsive">
                     <table
                         className="table table-bordered mt-4"
@@ -100,63 +100,78 @@ const ListProjects = () => {
                             ))}
                         </tbody>
                     </table>
-                    <nav className="d-flex justify-content-end pe-1">
-                        <ul className="pagination ">
-                            {paginaactual === 1 ? (
-                                <li className="page-item disabled">
-                                    <button
-                                        onClick={paginaAnterior}
-                                        className="page-link"
-                                        aria-label="Previous"
-                                        disabled
-                                    >
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </button>
-                                </li>
-                            ) : (
-                                <li className="page-item">
-                                    <button
-                                        onClick={paginaAnterior}
-                                        className="page-link"
-                                        aria-label="Previous"
-                                    >
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </button>
-                                </li>
-                            )}
-
+                </div>
+                <div className="d-flex flex-row justify-content-between">
+                    <label htmlFor="" className="robot-l">
+                        Mostrando de 1 a 5 de 11 entradas
+                    </label>
+                    <ul className="pagination ">
+                        {paginaactual === 1 ? (
                             <li className="page-item disabled">
-                                <button className="page-link " disabled>
-                                    ...
+                                <button
+                                    onClick={paginaAnterior}
+                                    className="page-link d-flex align-items-center m-0"
+                                    aria-label="Anterior"
+                                    disabled
+                                >
+                                    <span className="material-icons">
+                                        &#xe045;
+                                    </span>
+                                    Anterior
                                 </button>
                             </li>
+                        ) : (
+                            <li className="page-item">
+                                <button
+                                    onClick={paginaAnterior}
+                                    className="page-link d-flex align-items-center"
+                                    aria-label="Anterior"
+                                >
+                                    <span className="material-icons">
+                                        &#xe045;
+                                    </span>
+                                    Anterior
+                                </button>
+                            </li>
+                        )}
 
-                            {paginaactual === totalpaginas ? (
-                                <li className="page-item disabled">
-                                    <button
-                                        onClick={paginaSiguiente}
-                                        className="page-link"
-                                        href="#"
-                                        aria-label="Next"
-                                        disabled
-                                    >
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </button>
-                                </li>
-                            ) : (
-                                <li className="page-item">
-                                    <button
-                                        onClick={paginaSiguiente}
-                                        className="page-link"
-                                        href="#"
-                                        aria-label="Next"
-                                    >
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </button>
-                                </li>
-                            )}
-                        </ul>
-                    </nav>
+                        <li className="page-item disabled">
+                            <button className="page-link " disabled>
+                                ...
+                            </button>
+                        </li>
+
+                        {paginaactual === totalpaginas || totalpaginas === 0 ? (
+                            <li className="page-item disabled">
+                                <button
+                                    onClick={paginaSiguiente}
+                                    className="page-link d-flex align-items-center"
+                                    href="#"
+                                    aria-label="Next"
+                                    disabled
+                                >
+                                    Proximo
+                                    <span className="material-icons">
+                                        &#xe044;
+                                    </span>
+                                </button>
+                            </li>
+                        ) : (
+                            <li className="page-item">
+                                <button
+                                    onClick={paginaSiguiente}
+                                    className="page-link d-flex align-items-center"
+                                    href="#"
+                                    aria-label="Next"
+                                >
+                                    Proximo
+                                    <span className="material-icons">
+                                        &#xe044;
+                                    </span>
+                                </button>
+                            </li>
+                        )}
+                    </ul>
                 </div>
             </div>
         </Fragment>

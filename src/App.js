@@ -8,10 +8,10 @@ import ListAcademicBs from "./components/ListAcademicBs";
 import FormAcademicB from "./components/FormAcademicB";
 import AcademicBSee from "./components/AcademicBSee";
 import FormAcademicBEdit from "./components/FormAcademicBEdit";
-import FormProject from "./components/FormProject";
 import ListProjects from "./components/ListProjects";
-import FormProjectEdit from "./components/FormProjectEdit";
-import ProjectSee from "./components/ProjectSee";
+import ProjectEdit from "./views/ProjectEdit";
+import ProjectAdd from "./views/ProjectAdd";
+import ProjectSee from "./views/ProjectSee";
 import Home from "./views/Home";
 import Login from "./views/Login";
 import tokenAuth from "./config/token";
@@ -53,11 +53,7 @@ function App() {
                         />
                         {/* Rutas de maestros */}
                         {/* Rutas de proyectos */}
-                        <RoutePrivate
-                            exact
-                            path="/projectform"
-                            component={FormProject}
-                        />
+
                         <RoutePrivate
                             exact
                             path="/projects"
@@ -66,12 +62,17 @@ function App() {
                         <RoutePrivate
                             exact
                             path="/projectedit"
-                            component={FormProjectEdit}
+                            component={ProjectEdit}
                         />
                         <RoutePrivate
                             exact
                             path="/projectsee"
                             component={ProjectSee}
+                        />
+                        <RoutePrivate
+                            exact
+                            path="/projectadd"
+                            component={ProjectAdd}
                         />
                         {/* Rutas de proyectos */}
                         {/* Rutas de Cuerpos Académicos */}
